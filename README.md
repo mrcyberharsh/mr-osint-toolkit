@@ -26,7 +26,7 @@ Most tools that do pieces of this are either scattered across ten different scri
 ## Installation
 
 ```bash
-git clone https://github.com/<your-username>/mr-osint-toolkit.git
+git clone https://github.com/mrcyberharsh/mr-osint-toolkit.git
 cd mr-osint-toolkit
 pip install -r requirements.txt
 ```
