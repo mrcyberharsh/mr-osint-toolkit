@@ -4,7 +4,7 @@ A single command-line toolkit for legitimate, passive OSINT tasks — username p
 
 No hosting required. Runs entirely on your own machine.
 
-Built by **Harsh Saini** — [MR CYBER](https://mrcyberharsh.github.io/mrcyber/)
+Built by **Harsh Saini** — [MR Cyber Pulse](https://mrcyberharsh.github.io/mrcyber/)
 
 ---
 
@@ -88,9 +88,9 @@ All rights reserved — see [`LICENSE`](LICENSE). Free to use and modify for per
 
 ## Contact
 
-- Email: cyber.h4rsh@zohomail.in
+- Email: manager.prachi@zohomail.in
 - Website: https://mrcyberharsh.github.io/mrcyber/
 
 ---
 
-*"Complex ko simple. Simple ko powerful."* — MR CYBER
+*"Complex ko simple. Simple ko powerful."* — MR Cyber Pulse
