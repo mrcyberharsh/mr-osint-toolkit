@@ -1,0 +1,36 @@
+# <PROJECT_NAME>
+
+> <One-line description: what the project does, who it is for, what problem it solves.>
+
+<PROJECT_NAME> is a <category> tool for <audience>. It is <license> licensed and maintained by <maintainer> at <org>.
+
+## Quick Start
+
+- [README](https://github.com/mrcyberharsh/<REPO>/blob/main/README.md): Installation, usage, and configuration
+- [Installation Guide](https://github.com/mrcyberharsh/<REPO>#installation): Step-by-step setup
+- [CLI Reference](https://github.com/mrcyberharsh/<REPO>#cli): Command-line usage
+- [Configuration](https://github.com/mrcyberharsh/<REPO>/blob/main/config.yaml): Default settings
+
+## Core Documentation
+
+- [Architecture](https://github.com/mrcyberharsh/<REPO>#architecture): How the modules fit together
+- [Security Policy](https://github.com/mrcyberharsh/<REPO>/blob/main/SECURITY.md): Responsible disclosure
+- [Contributing](https://github.com/mrcyberharsh/<REPO>/blob/main/CONTRIBUTING.md): Development workflow
+- [Support](https://github.com/mrcyberharsh/<REPO>/blob/main/SUPPORT.md): Getting help
+
+## Use Cases
+
+- <Use case 1: e.g., "Inventory IoT devices on a private network">
+- <Use case 2: e.g., "Detect SMBv1 and signing misconfigurations">
+- <Use case 3: e.g., "Passive OSINT on public usernames">
+
+## Limitations
+
+- <Limitation 1: e.g., "Private IPv4 ranges only, max /24">
+- <Limitation 2: e.g., "Findings are leads, not proof of exploitability">
+- <Limitation 3: e.g., "No authentication or credential guessing">
+
+## Optional
+
+- [Changelog](https://github.com/mrcyberharsh/<REPO>/blob/main/CHANGELOG.md): Release notes
+- [License](https://github.com/mrcyberharsh/<REPO>/blob/main/LICENSE): <LICENSE_NAME>
