@@ -13,7 +13,8 @@ Built by **Harsh Saini · MR Cyber Pulse**.
 | `email` | Checks syntax, domain information, disposable-domain status, and MX records |
 | `phone` | Validates number format and displays available numbering metadata |
 | `scamcheck` | Reviews public website signals that may indicate risk |
-| `candidate` | Creates a report from profile and credential links voluntarily supplied by a candidate |
+| `candidate` | Creates a report from public profile and certificate links voluntarily supplied by a candidate |
+| `health` | Checks optional dependencies and public provider connectivity |
 
 Results depend on third-party public services and may be incomplete or inaccurate. They are not identity verification or proof of wrongdoing.
 
@@ -41,6 +42,12 @@ python mr_osint_toolkit.py --help
 
 ## Usage examples
 
+Check optional dependencies and the public GitHub API connection:
+
+```bash
+python mr_osint_toolkit.py health
+```
+
 ```bash
 # Public username presence
 python mr_osint_toolkit.py username torvalds
@@ -62,9 +69,18 @@ For candidate reports, use only links and information the person has voluntarily
 
 ```bash
 python mr_osint_toolkit.py candidate --help
+
+# Optional JSON and CSV exports
+python mr_osint_toolkit.py candidate --name "Example" --github example --json-output candidate.json --csv-output candidate.csv
 ```
 
 Run `python mr_osint_toolkit.py <command> --help` to see the options supported by your installed version.
+
+## Exports and provider health
+
+The candidate command always creates a local HTML report. JSON and CSV exports are opt-in through `--json-output` and `--csv-output`; they contain only the candidate name and public profile/link metadata supplied for that report. The toolkit does not maintain background history.
+
+The `health` command checks optional Python dependencies and whether the public GitHub API is reachable. It does not scan targets.
 
 ## Ethical boundaries
 
