@@ -48,6 +48,7 @@ any individual tool.
 """
 
 import argparse
+import json
 import concurrent.futures
 import re
 import socket
@@ -78,36 +79,16 @@ except ImportError:
     HAVE_DNS = False
 
 
+from providers import USERNAME_PLATFORMS
+import reporting
+from health import run_health_check
+
 BANNER = "MR OSINT — by Harsh Saini / MR CYBER"
 
 
 # ======================================================================
 # SUBCOMMAND: username
 # ======================================================================
-
-USERNAME_PLATFORMS = {
-    "GitHub":        ("https://github.com/{u}", None),
-    "LinkedIn":      ("https://www.linkedin.com/in/{u}", None),
-    "GitLab":        ("https://gitlab.com/{u}", None),
-    "Reddit":        ("https://www.reddit.com/user/{u}", None),
-    "Twitter/X":     ("https://x.com/{u}", None),
-    "Instagram":     ("https://www.instagram.com/{u}/", None),
-    "TikTok":        ("https://www.tiktok.com/@{u}", None),
-    "YouTube":       ("https://www.youtube.com/@{u}", None),
-    "Twitch":        ("https://www.twitch.tv/{u}", None),
-    "Pinterest":     ("https://www.pinterest.com/{u}/", None),
-    "Medium":        ("https://medium.com/@{u}", None),
-    "DEV Community": ("https://dev.to/{u}", None),
-    "Steam":         ("https://steamcommunity.com/id/{u}", "The specified profile could not be found"),
-    "HackerNews":    ("https://news.ycombinator.com/user?id={u}", "No such user"),
-    "Keybase":       ("https://keybase.io/{u}", None),
-    "Telegram":      ("https://t.me/{u}", None),
-    "Facebook":      ("https://www.facebook.com/{u}", None),
-    "SoundCloud":    ("https://soundcloud.com/{u}", None),
-    "Spotify":       ("https://open.spotify.com/user/{u}", None),
-    "Roblox":        ("https://www.roblox.com/user.aspx?username={u}", "Page cannot be found"),
-    "Docker Hub":    ("https://hub.docker.com/u/{u}", None),
-}
 
 UA_HEADERS = {
     "User-Agent": (
@@ -140,8 +121,8 @@ def cmd_username(args):
         print("The 'requests' library isn't installed. Run: pip install requests")
         return
 
-    if not args.username or any(c.isspace() for c in args.username):
-        print("Please provide a single username with no spaces.", file=sys.stderr)
+    if not args.username or not re.fullmatch(r"[A-Za-z0-9_.-]{1,64}", args.username):
+        print("Please provide a username containing only letters, numbers, dots, underscores, or hyphens (1–64 characters).", file=sys.stderr)
         sys.exit(1)
 
     results = []
@@ -769,7 +750,27 @@ def cmd_candidate(args):
         f.write(html)
 
     print(f"\nReport saved: {filename}")
-    print("Open it directly in any browser — no server needed.\n")
+    payload = reporting.build_candidate_payload(
+        args.name, github_data, github_err, args.portfolio, portfolio_result, cert_results
+    )
+    if args.json_output:
+        reporting.write_json(payload, args.json_output)
+        print(f"JSON export saved: {args.json_output}")
+    if args.csv_output:
+        reporting.write_csv(payload, args.csv_output)
+        print(f"CSV export saved: {args.csv_output}")
+    print("Open the HTML report directly in any browser — no server needed.\n")
+def cmd_health(args):
+    result = run_health_check()
+    print(f"\n{BANNER}\nEnvironment health check\n" + "=" * 60)
+    print("Optional dependencies:")
+    for name, available in result["dependencies"].items():
+        print(f"  {name:<16} {'available' if available else 'not installed'}")
+    print("Provider connectivity:")
+    for provider in result["providers"]:
+        state = "OK" if provider["ok"] else "UNAVAILABLE"
+        print(f"  {provider['provider']:<16} {state} — {provider['detail']}")
+    print("\nHealth checks verify dependencies and service reachability only; they do not validate target data.\n")
 
 
 # ======================================================================
@@ -782,6 +783,9 @@ def main():
         description="MR OSINT — unified toolkit (username / ip / email / phone / scamcheck / candidate). By Harsh Saini — MR CYBER.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
+
+    p_health = sub.add_parser("health", help="Check optional dependencies and public provider connectivity")
+    p_health.set_defaults(func=cmd_health)
 
     p_username = sub.add_parser("username", help="Check a username's presence across 20 major platforms")
     p_username.add_argument("username")
@@ -810,6 +814,8 @@ def main():
     p_cand.add_argument("--github")
     p_cand.add_argument("--portfolio")
     p_cand.add_argument("--cert", action="append", default=[])
+    p_cand.add_argument("--json-output", help="Optional JSON export path for candidate-supplied public links")
+    p_cand.add_argument("--csv-output", help="Optional CSV export path for candidate-supplied public links")
     p_cand.set_defaults(func=cmd_candidate)
 
     args = parser.parse_args()
