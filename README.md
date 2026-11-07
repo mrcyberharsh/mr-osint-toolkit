@@ -1,96 +1,101 @@
 # MR OSINT Toolkit
 
-A single command-line toolkit for legitimate, passive OSINT tasks — username presence checks, IP/email/phone metadata lookups, scam-website red-flag checks, and candidate profile verification for hiring.
+A local command-line toolkit for **passive, consent-based OSINT checks**. It brings common public-data and technical-metadata checks together in one Python interface.
 
-No hosting required. Runs entirely on your own machine.
+Built by **Harsh Saini · MR Cyber Pulse**.
 
-Built by **Harsh Saini** — [MR Cyber Pulse](https://mrcyberharsh.github.io/mrcyber/)
+## What it includes
 
----
+| Command | Purpose |
+|---|---|
+| `username` | Checks public account presence across supported platforms |
+| `ip` | Displays technical IP metadata such as geolocation, ISP, and ASN |
+| `email` | Checks syntax, domain information, disposable-domain status, and MX records |
+| `phone` | Validates number format and displays available numbering metadata |
+| `scamcheck` | Reviews public website signals that may indicate risk |
+| `candidate` | Creates a report from profile and credential links voluntarily supplied by a candidate |
 
-## What's inside
+Results depend on third-party public services and may be incomplete or inaccurate. They are not identity verification or proof of wrongdoing.
 
-| Command      | What it does                                                          |
-|--------------|------------------------------------------------------------------------|
-| `username`   | Checks if a username exists across 20 major platforms                  |
-| `ip`         | Geolocation, ISP, and ASN info for an IP address                       |
-| `email`      | Syntax validation, domain check, disposable-domain flag, MX records    |
-| `phone`      | Format validation, country, carrier, and number type                  |
-| `scamcheck`  | Checks a website against public scam red flags (WHOIS age, SSL, patterns) |
-| `candidate`  | Generates an HTML report verifying a job candidate's self-provided GitHub/portfolio/certificate links |
+## Requirements
 
-## Why this exists
+- Python 3.8+
+- `requests` for most commands
+- Optional: `phonenumbers` and `dnspython` for enhanced phone and email checks
 
-Most tools that do pieces of this are either scattered across ten different scripts, technical and ugly (looking at you, bare WHOIS output), or quietly cross ethical lines. This toolkit is built around one rule: **every check reports technical/public metadata only — never who a real person is.** See the "Ethical boundaries" section below; it's not just a disclaimer, it's baked into what the code will and won't do.
+See [requirements.txt](requirements.txt) for the project dependency list.
 
 ## Installation
 
 ```bash
 git clone https://github.com/mrcyberharsh/mr-osint-toolkit.git
 cd mr-osint-toolkit
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-`requests` is required for most commands. `phonenumbers` and `dnspython` are optional — without them, `phone` and `email` fall back to basic checks and tell you what you're missing.
-
-## Usage
+Run the toolkit's help screen:
 
 ```bash
-# Check a username across platforms
-python mr_osint_toolkit.py username torvalds
-
-# IP geolocation / ISP info
-python mr_osint_toolkit.py ip 8.8.8.8
-
-# Email validation + domain/MX check
-python mr_osint_toolkit.py email someone@example.com
-
-# Phone number validation + carrier/type
-python mr_osint_toolkit.py phone +14155552671
-
-# Website scam red-flag check
-python mr_osint_toolkit.py scamcheck suspicious-site.xyz
-
-# Candidate verification report (saves an HTML file)
-python mr_osint_toolkit.py candidate \
-    --name "Candidate Name" \
-    --github their-github-username \
-    --portfolio https://theirportfolio.com \
-    --cert https://credly.com/badges/xxxx
+python mr_osint_toolkit.py --help
 ```
 
-Run `python mr_osint_toolkit.py <command> --help` for options on any subcommand.
+## Usage examples
 
-## Ethical boundaries — read before using
+```bash
+# Public username presence
+python mr_osint_toolkit.py username torvalds
 
-This toolkit is built for:
-- Checking your own digital footprint
-- Security research with consent
-- Verifying scam/phishing red flags on suspicious sites
-- Verifying job-candidate claims **they volunteered themselves** during a hiring process
+# Technical IP metadata
+python mr_osint_toolkit.py ip 8.8.8.8
 
-It is **not** built for, and will not be extended to do:
-- Identifying who owns a given username, email, phone number, or IP address
-- Facial recognition or photo-based person identification
-- Investigating people who haven't consented or applied for something
-- Any form of stalking, harassment, or doxxing
+# Email syntax and domain checks
+python mr_osint_toolkit.py email someone@example.com
 
-If a request would cross these lines, the answer is no — regardless of how the request is framed.
+# Phone-number format and numbering metadata
+python mr_osint_toolkit.py phone +14155552671
 
-## Requirements
+# Public website risk signals
+python mr_osint_toolkit.py scamcheck example.org
+```
 
-- Python 3.8+
-- See [`requirements.txt`](requirements.txt)
+For candidate reports, use only links and information the person has voluntarily provided for that purpose:
+
+```bash
+python mr_osint_toolkit.py candidate --help
+```
+
+Run `python mr_osint_toolkit.py <command> --help` to see the options supported by your installed version.
+
+## Ethical boundaries
+
+This project is intended for:
+- Reviewing your own public digital footprint
+- Authorized security research and education
+- Checking technical/public signals from websites
+- Reviewing professional links voluntarily supplied by a candidate
+
+This project is **not** for identifying or tracking private individuals, doxxing, harassment, facial recognition, or collecting private personal information. A username, email address, phone number, or IP address must not be treated as proof of a person's identity or location.
+
+Use public services responsibly, follow their terms, and avoid excessive requests.
+
+## Limitations
+
+- Third-party APIs and websites can change, rate-limit, or block requests.
+- Geolocation and reputation data are approximate and can be stale.
+- A positive or negative signal is not a definitive security verdict.
+- Optional dependencies may be required for some enriched checks.
+
+## Contributing
+
+Bug reports and focused pull requests are welcome. Include the command used, expected result, actual result, and sanitized error output. Never include passwords, API keys, or private personal data.
 
 ## License
 
-All rights reserved — see [`LICENSE`](LICENSE). Free to use and modify for personal and educational purposes; don't redistribute as your own work without credit.
+See [LICENSE](LICENSE) for the project's usage and redistribution terms. Please retain attribution when sharing or modifying the project.
 
 ## Contact
 
-- Email: manager.prachi@zohomail.in
+- GitHub: https://github.com/mrcyberharsh
 - Website: https://mrcyberharsh.github.io/mrcyber/
 
----
-
-*"Complex ko simple. Simple ko powerful."* — MR Cyber Pulse
+*Complex ko simple. Simple ko powerful.* — MR Cyber Pulse
